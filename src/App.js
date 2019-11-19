@@ -1,4 +1,4 @@
-import React , {Fragment} from 'react';
+import React , {Fragment, useState, useEffect} from 'react';
 import Cabecalho from './components/Cabecalho';
 import Dashboard from './components/Dashboard';
 import Widget from './components/Widget';
@@ -7,6 +7,13 @@ import Tweet from './components/Tweet';
 import NavMenu from './components/NavMenu';
 
 function App() {
+
+  const [tweet, setTweet] = useState('');
+
+  useEffect(()=>{
+    //console.log(tweet);
+  })
+
   return (
     <Fragment>
       <Cabecalho>
@@ -17,10 +24,18 @@ function App() {
           <Widget>
             <form className="novoTweet">
               <div className="novoTweet__editorArea">
-                <span className="novoTweet__status">0/140</span>
-                <textarea className="novoTweet__editor" placeholder="O que está acontecendo?"></textarea>
+                <span className={`novoTweet__status ${tweet.length > 140 ? 'novoTweet__status--invalido' : '' }`}>
+                  {tweet.length}/140
+                </span>
+                <textarea 
+                 defaultValue={tweet}
+                 onInput={ event => setTweet(event.target.value) }
+                 className="novoTweet__editor" placeholder="O que está acontecendo?">
+                </textarea>
               </div>
-              <button type="submit" className="novoTweet__envia">Tweetar</button>
+              <button 
+                disabled={tweet.length > 140 ? true : false}
+              type="submit" className="novoTweet__envia">Tweetar</button>
             </form>
           </Widget>
           <Widget>
