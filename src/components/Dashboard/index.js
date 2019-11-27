@@ -1,14 +1,12 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './dashboard.css'
 
-class Dashboard extends Component {
-    render() {
-        return (
-            <div className={`dashboard dashboard__${this.props.posicao}`}>
-                {this.props.children}
-            </div>
-        )
-    }
+function Dashboard(props) {
+  return (
+    <div className={`dashboard dashboard__${props.posicao}`}>
+      {props.children}
+    </div>    
+  )
 }
 
-export default Dashboard
+export default Dashboard;

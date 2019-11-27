@@ -1,14 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './widget.css'
 
-class Widget extends Component {
-    render() {
-        return (
-            <div className="widget">
-                { this.props.children }
-            </div>
-        )
-    }
+function Widget(props) {
+  return (
+    <div className="widget">{props.children}</div>
+  );
 }
 
 export default Widget
