@@ -1,7 +1,7 @@
 import React from 'react'
 import './tweet.css'
 
-function Tweet() {
+function Tweet(props) {
   return (
     <article className="tweet">
       <div className="tweet__cabecalho">
@@ -10,23 +10,14 @@ function Tweet() {
           src="https://placehold.it/50x50"
           alt=""
         />
-        <span className="tweet__nomeUsuario">Fulano de Tal</span>
+        <span className="tweet__nomeUsuario">Caelum</span>
         <a href="/">
           <span className="tweet__userName">@caelum</span>
         </a>
       </div>
       <p className="tweet__conteudo">
         <span>
-          Lorem, ipsum dolor sit{" "}
-          <a href="/trends/#amet" data-reactroot="">
-            #amet
-          </a>{" "}
-          consectetur adipisicing{" "}
-          <a href="/trends/#elit" data-reactroot="">
-            #elit
-          </a>
-          . Adipisci ut cumque tempora? Quam velit vitae voluptatum
-          tempora iste, mollitia, sa
+         {props.texto}
         </span>
       </p>
       <footer className="tweet__footer">

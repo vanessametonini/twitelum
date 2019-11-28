@@ -9,10 +9,19 @@ import NavMenu from './components/NavMenu';
 function App() {
 
   const [tweet, setTweet] = useState('');
+  const [tweetList, setTweetList] = useState([]);
 
-  useEffect(()=>{
+  useEffect(()=> {
     //console.log(tweet);
   })
+
+  const adicionaTweet = (event) => {
+    event.preventDefault();
+    if(tweet){
+      setTweetList([tweet, ...tweetList]);
+      setTweet('');
+    }
+  }
 
   return (
     <Fragment>
@@ -22,19 +31,20 @@ function App() {
       <div className="container">
         <Dashboard>
           <Widget>
-            <form className="novoTweet">
+            <form className="novoTweet" onSubmit={adicionaTweet}>
               <div className="novoTweet__editorArea">
                 <span className={`novoTweet__status ${tweet.length > 140 ? 'novoTweet__status--invalido' : '' }`}>
                   {tweet.length}/140
                 </span>
                 <textarea 
-                 defaultValue={tweet}
-                 onInput={ event => setTweet(event.target.value) }
+                  autoFocus
+                 value={tweet}
+                 onChange={ event => setTweet(event.target.value) }
                  className="novoTweet__editor" placeholder="O que está acontecendo?">
                 </textarea>
               </div>
               <button 
-                disabled={tweet.length > 140 ? true : false}
+                disabled={tweet.length > 140 || tweet.length < 1 ? true : false}
               type="submit" className="novoTweet__envia">Tweetar</button>
             </form>
           </Widget>
@@ -45,7 +55,14 @@ function App() {
         <Dashboard posicao="centro">
           <Widget>
             <div className="tweetsArea">
-              <Tweet />
+            {
+              tweetList.length <= 0 ? 
+                <p>Oops! Você ainda não tuitou!</p>
+              :
+                tweetList.map((tweet, index) => {
+                  return <Tweet key={index} texto={tweet} />
+                })
+            }
             </div>
           </Widget>
         </Dashboard>
