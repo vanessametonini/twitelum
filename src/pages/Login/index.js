@@ -38,11 +38,7 @@ function Login(props) {
     )
     .catch(
       responseError => {
-        responseError.json().then(erro => {
-          setMsgErro(erro.message)
-          console.log(msgErro);
-          
-        })
+        responseError.json().then(erro => setMsgErro(erro.message))
       }
     )
     
