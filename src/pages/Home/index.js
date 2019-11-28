@@ -1,12 +1,12 @@
 import React , {Fragment, useState, useEffect} from 'react';
-import Cabecalho from './components/Cabecalho';
-import Dashboard from './components/Dashboard';
-import Widget from './components/Widget';
-import TrendsArea from './components/TrendsArea';
-import Tweet from './components/Tweet';
-import NavMenu from './components/NavMenu';
+import Cabecalho from '../../components/Cabecalho';
+import Dashboard from '../../components/Dashboard';
+import Widget from '../../components/Widget';
+import TrendsArea from '../../components/TrendsArea';
+import Tweet from '../../components/Tweet';
+import NavMenu from '../../components/NavMenu';
 
-function App() {
+function Home() {
 
   const [tweet, setTweet] = useState('');
   const [tweetList, setTweetList] = useState([]);
@@ -26,7 +26,7 @@ function App() {
   return (
     <Fragment>
       <Cabecalho>
-        <NavMenu usuario="@vanessametonini"/>
+        <NavMenu usuario="@caelum"/>
       </Cabecalho>
       <div className="container">
         <Dashboard>
@@ -71,4 +71,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
