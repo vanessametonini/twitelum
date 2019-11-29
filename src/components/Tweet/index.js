@@ -2,17 +2,20 @@ import React from 'react'
 import './tweet.css'
 
 function Tweet(props) {
+
+  const {nome, login, foto} = props.tweetInfo.usuario;
+
   return (
     <article className="tweet">
       <div className="tweet__cabecalho">
         <img
           className="tweet__fotoUsuario"
-          src="https://placehold.it/50x50"
+          src={foto}
           alt=""
         />
-        <span className="tweet__nomeUsuario">Caelum</span>
+        <span className="tweet__nomeUsuario">{nome}</span>
         <a href="/">
-          <span className="tweet__userName">@caelum</span>
+          <span className="tweet__userName">@{login}</span>
         </a>
       </div>
       <p className="tweet__conteudo">

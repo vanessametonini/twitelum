@@ -11,15 +11,31 @@ function Home() {
   const [tweet, setTweet] = useState('');
   const [tweetList, setTweetList] = useState([]);
 
-  useEffect(()=> {
+  useEffect(() => {
     //console.log(tweet);
   })
 
   const adicionaTweet = (event) => {
     event.preventDefault();
     if(tweet){
-      setTweetList([tweet, ...tweetList]);
-      setTweet('');
+
+      fetch(
+        `https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN${localStorage.getItem('token')}`,
+        {
+          method: 'POST',
+          body: JSON.stringify({conteudo: tweet, login: 'vanessametonini'})
+        }
+      )
+      .then( response => response.json())
+      .then(
+        tweetDaAPI => {
+          console.log(tweetDaAPI);
+          
+          setTweetList([tweetDaAPI, ...tweetList]);
+          setTweet('');
+        }
+      )
+
     }
   }
 
@@ -59,8 +75,8 @@ function Home() {
               tweetList.length <= 0 ? 
                 <p>Oops! Você ainda não tuitou!</p>
               :
-                tweetList.map((tweet, index) => {
-                  return <Tweet key={index} texto={tweet} />
+                tweetList.map((tweet) => {
+                  return <Tweet key={tweet._id} texto={tweet.conteudo} tweetInfo={tweet} />
                 })
             }
             </div>
