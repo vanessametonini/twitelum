@@ -11,31 +11,42 @@ function Home() {
   const [tweet, setTweet] = useState('');
   const [tweetList, setTweetList] = useState([]);
 
+  const urlAPI = `https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${localStorage.getItem('token')}`;
+
   useEffect(() => {
-    //console.log(tweet);
+    listarTweets()    
   })
+
+  const listarTweets = () => {
+    if(!tweetList.length) {
+      fetch(urlAPI)
+        .then(response => response.json())
+        .then(tweetsAPI => {
+          console.log(tweetsAPI);
+          setTweetList(tweetsAPI)
+        })
+    }
+  }
 
   const adicionaTweet = (event) => {
     event.preventDefault();
-    if(tweet){
 
+    if(tweet){
       fetch(
-        `https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN${localStorage.getItem('token')}`,
+        urlAPI,
         {
           method: 'POST',
           body: JSON.stringify({conteudo: tweet, login: 'vanessametonini'})
         }
       )
-      .then( response => response.json())
+      .then(response => response.json())
       .then(
         tweetDaAPI => {
           console.log(tweetDaAPI);
-          
           setTweetList([tweetDaAPI, ...tweetList]);
           setTweet('');
         }
       )
-
     }
   }
 
