@@ -36,7 +36,7 @@ function Home() {
         urlAPI,
         {
           method: 'POST',
-          body: JSON.stringify({conteudo: tweet, login: 'vanessametonini'})
+          body: JSON.stringify({conteudo: tweet})
         }
       )
       .then(response => response.json())
@@ -50,6 +50,16 @@ function Home() {
     }
   }
 
+  const removerTweet = (tweetId) => {
+    console.log(urlAPI.replace('tweets?', `tweets/${tweetId}?`));
+    fetch(urlAPI.replace('tweets?', `tweets/${tweetId}?`), {method: 'DELETE'})
+    .then(d => d.json())
+    .then( r => {
+      console.log(r);
+      setTweetList(tweetList.filter( (tweet) => tweet._id != tweetId ))
+    })
+  }
+ 
   return (
     <Fragment>
       <Cabecalho>
@@ -87,7 +97,12 @@ function Home() {
                 <p>Oops! Você ainda não tuitou!</p>
               :
                 tweetList.map((tweet) => {
-                  return <Tweet key={tweet._id} texto={tweet.conteudo} tweetInfo={tweet} />
+                  return <Tweet 
+                            key={tweet._id} 
+                            texto={tweet.conteudo} 
+                            tweetInfo={tweet} 
+                            removeHandler={(event) => removerTweet(tweet._id)} 
+                          />
                 })
             }
             </div>

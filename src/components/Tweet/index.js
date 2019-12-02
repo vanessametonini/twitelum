@@ -61,6 +61,11 @@ function Tweet(props) {
           </svg>
           {totalLikes}
         </button>
+        
+        { props.tweetInfo.removivel &&
+          <button onClick={props.removeHandler} className="btn btn--blue btn--remove">x</button>
+        }
+    
       </footer>
     </article>
   );
