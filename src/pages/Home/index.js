@@ -51,12 +51,12 @@ function Home() {
   }
 
   const removerTweet = (tweetId) => {
-    console.log(urlAPI.replace('tweets?', `tweets/${tweetId}?`));
+    //console.log(urlAPI.replace('tweets?', `tweets/${tweetId}?`));
     fetch(urlAPI.replace('tweets?', `tweets/${tweetId}?`), {method: 'DELETE'})
     .then(d => d.json())
     .then( r => {
       console.log(r);
-      setTweetList(tweetList.filter( (tweet) => tweet._id != tweetId ))
+      setTweetList(tweetList.filter( (tweet) => tweet._id !== tweetId ))
     })
   }
  
