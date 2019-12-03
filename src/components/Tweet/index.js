@@ -1,4 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import PropTypes from 'prop-types';
+
 import './tweet.css'
 
 function Tweet(props) {
@@ -72,3 +74,18 @@ function Tweet(props) {
 }
 
 export default Tweet;
+
+Tweet.propTypes = {
+  texto: PropTypes.string.isRequired,
+  removeHandler: PropTypes.func.isRequired,
+  tweetInfo: PropTypes.shape({
+    _id: PropTypes.string,
+    likeado: PropTypes.bool,
+    totalLikes: PropTypes.number,
+    usuario: PropTypes.shape({
+      foto: PropTypes.string,
+      nome: PropTypes.string,
+      login: PropTypes.string
+    }).isRequired
+  }).isRequired
+};
