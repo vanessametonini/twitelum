@@ -5,11 +5,13 @@ import Widget from '../../components/Widget';
 import TrendsArea from '../../components/TrendsArea';
 import Tweet from '../../components/Tweet';
 import NavMenu from '../../components/NavMenu';
+import { Modal } from '../../components/Modal';
 
 function Home() {
 
   const [tweet, setTweet] = useState('');
   const [tweetList, setTweetList] = useState([]);
+  const [tweetAtivo, setTweetAtivo] = useState({});
 
   const urlAPI = `https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${localStorage.getItem('token')}`;
 
@@ -56,8 +58,31 @@ function Home() {
     .then(d => d.json())
     .then( r => {
       console.log(r);
+      setTweetAtivo({});
       setTweetList(tweetList.filter( (tweet) => tweet._id !== tweetId ))
     })
+  }
+
+  const abreModalParaTweet = (event, tweetId) => {
+
+    const isTweetFooter = event.target.closest('.tweet__footer');
+
+    if (isTweetFooter) return false;
+
+    const tweetSelecionado = tweetList.find(tweet => tweet._id === tweetId);
+
+    setTweetAtivo(tweetSelecionado);
+
+  }
+
+  const fechaModal = (event) => {
+    const isModal = event.target.closest('.widget');
+    console.log(isModal);
+
+    if (!isModal) {
+      setTweetAtivo({})
+    }
+
   }
  
   return (
@@ -90,23 +115,27 @@ function Home() {
           </Widget>
         </Dashboard>
         <Dashboard posicao="centro">
-          <Widget>
-            <div className="tweetsArea">
-            {
-              tweetList.length <= 0 ? 
-                <p>Oops! Você ainda não tuitou!</p>
-              :
-                tweetList.map((tweet) => {
-                  return <Tweet 
-                            key={tweet._id} 
-                            texto={tweet.conteudo} 
-                            tweetInfo={tweet} 
-                            removeHandler={(event) => removerTweet(tweet._id)} 
-                          />
-                })
-            }
-            </div>
-          </Widget>
+          <Modal fechaModal={fechaModal} isAberto={!!tweetAtivo._id}>
+            <Widget>
+              <div className="tweetsArea">
+              {
+                tweetList.length <= 0 ? 
+                  <p>Oops! Você ainda não tuitou!</p>
+                :
+                  tweetList.map((tweet) => {
+                    return <Tweet 
+                              key={tweet._id} 
+                              texto={tweet.conteudo} 
+                              tweetInfo={tweet} 
+                              removeHandler={(event) => removerTweet(tweet._id)} 
+                              handleAbeModalParaTweet={(event)=>abreModalParaTweet(event,tweet._id)}
+                              tweetInModal={true}
+                            />
+                  })
+              }
+              </div>
+            </Widget>
+          </Modal>
         </Dashboard>
       </div>
     </Fragment>

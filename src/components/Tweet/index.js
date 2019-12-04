@@ -67,6 +67,12 @@ function Tweet(props) {
         { props.tweetInfo.removivel &&
           <button onClick={props.removeHandler} className="btn btn--blue btn--remove">x</button>
         }
+
+        <div >
+          {
+            props.tweetInModal && props.tweetInfo.likes.map( liker => `@${liker.usuario.login}`)    
+          }
+        </div>
     
       </footer>
     </article>
@@ -76,6 +82,9 @@ function Tweet(props) {
 export default Tweet;
 
 Tweet.propTypes = {
+  handleAbeModalParaTweet: PropTypes.func,
+  tweetInModal: PropTypes.bool,
+
   texto: PropTypes.string.isRequired,
   removeHandler: PropTypes.func.isRequired,
   tweetInfo: PropTypes.shape({
