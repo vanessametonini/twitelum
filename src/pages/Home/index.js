@@ -54,6 +54,7 @@ function Home() {
 
   const removerTweet = (tweetId) => {
     //console.log(urlAPI.replace('tweets?', `tweets/${tweetId}?`));
+  
     fetch(urlAPI.replace('tweets?', `tweets/${tweetId}?`), {method: 'DELETE'})
     .then(d => d.json())
     .then( r => {
@@ -64,25 +65,17 @@ function Home() {
   }
 
   const abreModalParaTweet = (event, tweetId) => {
-
+    //para nao abrir modal quando clica no like
     const isTweetFooter = event.target.closest('.tweet__footer');
 
     if (isTweetFooter) return false;
-
+    //encontra o tweet clicado e grava no state
     const tweetSelecionado = tweetList.find(tweet => tweet._id === tweetId);
-
     setTweetAtivo(tweetSelecionado);
-
   }
 
-  const fechaModal = (event) => {
-    const isModal = event.target.closest('.widget');
-    console.log(isModal);
-
-    if (!isModal) {
+  const fechaModal = () => {
       setTweetAtivo({})
-    }
-
   }
  
   return (
@@ -115,29 +108,38 @@ function Home() {
           </Widget>
         </Dashboard>
         <Dashboard posicao="centro">
-          <Modal fechaModal={fechaModal} isAberto={!!tweetAtivo._id}>
             <Widget>
               <div className="tweetsArea">
-              {
-                tweetList.length <= 0 ? 
-                  <p>Oops! Você ainda não tuitou!</p>
-                :
-                  tweetList.map((tweet) => {
-                    return <Tweet 
-                              key={tweet._id} 
-                              texto={tweet.conteudo} 
-                              tweetInfo={tweet} 
-                              removeHandler={(event) => removerTweet(tweet._id)} 
-                              handleAbeModalParaTweet={(event)=>abreModalParaTweet(event,tweet._id)}
-                              tweetInModal={true}
-                            />
-                  })
-              }
+                  {
+                    tweetList.length <= 0 ? 
+                      <p>Oops! Você ainda não tuitou!</p>
+                    :
+                      tweetList.map((tweet) => {
+                        return <Tweet 
+                                  key={tweet._id} 
+                                  texto={tweet.conteudo} 
+                                  tweetInfo={tweet} 
+                                  removeHandler={() => removerTweet(tweet._id)} 
+                                  handleAbreModalParaTweet={(event)=>abreModalParaTweet(event,tweet._id)}
+                                />
+                      })
+                  }
               </div>
             </Widget>
-          </Modal>
         </Dashboard>
       </div>
+
+      <Modal fechaModal={fechaModal} isAberto={Boolean(tweetAtivo._id)}>
+        {
+          tweetAtivo.conteudo &&
+            <Tweet
+              texto={tweetAtivo.conteudo}
+              tweetInfo={tweetAtivo}
+              removeHandler={() => removerTweet(tweetAtivo._id)}
+              tweetInModal={Boolean(tweetAtivo._id)}
+            />
+        }
+      </Modal>
     </Fragment>
   );
 }

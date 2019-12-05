@@ -25,7 +25,7 @@ function Tweet(props) {
   }
 
   return (
-    <article className="tweet">
+    <article className="tweet" onClick={props.handleAbreModalParaTweet}>
       <div className="tweet__cabecalho">
         <img
           className="tweet__fotoUsuario"
@@ -67,12 +67,15 @@ function Tweet(props) {
         { props.tweetInfo.removivel &&
           <button onClick={props.removeHandler} className="btn btn--blue btn--remove">x</button>
         }
-
-        <div >
-          {
-            props.tweetInModal && props.tweetInfo.likes.map( liker => `@${liker.usuario.login}`)    
-          }
-        </div>
+          
+        {
+          props.tweetInModal &&
+          <ul className="tweet__likeadores">
+            {props.tweetInfo.likes.map(liker => 
+              <li>@{liker.usuario.login}</li>)
+            }
+          </ul>
+        }
     
       </footer>
     </article>
@@ -82,7 +85,7 @@ function Tweet(props) {
 export default Tweet;
 
 Tweet.propTypes = {
-  handleAbeModalParaTweet: PropTypes.func,
+  handleAbreModalParaTweet: PropTypes.func,
   tweetInModal: PropTypes.bool,
 
   texto: PropTypes.string.isRequired,
