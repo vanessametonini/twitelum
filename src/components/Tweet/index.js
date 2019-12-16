@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './tweet.css'
 
-function Tweet(props) {
+export default function Tweet(props) {
 
   const {nome, login, foto} = props.tweetInfo.usuario;
 
@@ -81,8 +81,6 @@ function Tweet(props) {
     </article>
   );
 }
-
-export default Tweet;
 
 Tweet.propTypes = {
   handleAbreModalParaTweet: PropTypes.func,

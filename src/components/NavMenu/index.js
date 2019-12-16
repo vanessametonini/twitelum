@@ -1,7 +1,7 @@
 import React from 'react';
 import './navMenu.css';
 
-function NavMenu(props) {
+export default function NavMenu(props) {
   return (
     <nav className="navMenu">
       <ul className="navMenu__lista">
@@ -30,5 +30,3 @@ function NavMenu(props) {
     </nav>
   );
 }
-
-export default NavMenu;

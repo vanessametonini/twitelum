@@ -3,7 +3,7 @@ import Cabecalho from '../../components/Cabecalho';
 import Widget from '../../components/Widget';
 import './login.css';
 
-function Login(props) {
+export default function Login(props) {
 
   const [msgErro, setMsgErro] = useState('');
 
@@ -93,5 +93,3 @@ function Login(props) {
     </Fragment>
   );
 }
-
-export default Login;

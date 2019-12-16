@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import Widget from './../Widget';
 import './modal.css';
 
-export function Modal (props) {
+export default function Modal (props) {
 
   const handleBlackAreaClick = (infosDoEvento) => {
     //verifica se clicou na modal mesmo
@@ -13,8 +13,8 @@ export function Modal (props) {
   }
 
   return (
-    <div
-      onClick={handleBlackAreaClick} className={`modal ${props.isAberto ? 'modal--active' : ''}`}>
+    <div onClick={handleBlackAreaClick} 
+        className={`modal ${props.isAberto ? 'modal--active' : ''}`}>
         <Widget>
           {props.children}
         </Widget>

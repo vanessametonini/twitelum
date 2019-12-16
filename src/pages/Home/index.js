@@ -5,12 +5,17 @@ import Widget from '../../components/Widget';
 import TrendsArea from '../../components/TrendsArea';
 import Tweet from '../../components/Tweet';
 import NavMenu from '../../components/NavMenu';
-import { Modal } from '../../components/Modal';
+import Modal from '../../components/Modal';
+import { useSelector, useDispatch } from "react-redux";
 
-function Home() {
+export default function Home() {
+
+  const tweetsStore = useSelector(state => state);
+  
+  const dispatch = useDispatch();
 
   const [tweet, setTweet] = useState('');
-  const [tweetList, setTweetList] = useState([]);
+  //const [tweetList, setTweetList] = useState([]);
   const [tweetAtivo, setTweetAtivo] = useState({});
 
   const urlAPI = `https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${localStorage.getItem('token')}`;
@@ -20,12 +25,12 @@ function Home() {
   })
 
   const listarTweets = () => {
-    if(!tweetList.length) {
+    if(!tweetsStore.length) {
       fetch(urlAPI)
         .then(response => response.json())
         .then(tweetsAPI => {
-          console.log(tweetsAPI);
-          setTweetList(tweetsAPI)
+          //setTweetList(tweetsAPI)
+          dispatch({type: 'CARREGA_TWEETS', tweets: tweetsAPI})
         })
     }
   }
@@ -44,8 +49,8 @@ function Home() {
       .then(response => response.json())
       .then(
         tweetDaAPI => {
-          console.log(tweetDaAPI);
-          setTweetList([tweetDaAPI, ...tweetList]);
+          //setTweetList([tweetDaAPI, ...tweetList]);
+          dispatch({type: 'ADICIONA_TWEET', newTweet: tweetDaAPI })
           setTweet('');
         }
       )
@@ -58,9 +63,9 @@ function Home() {
     fetch(urlAPI.replace('tweets?', `tweets/${tweetId}?`), {method: 'DELETE'})
     .then(d => d.json())
     .then( r => {
-      console.log(r);
       setTweetAtivo({});
-      setTweetList(tweetList.filter( (tweet) => tweet._id !== tweetId ))
+      //setTweetList(tweetList.filter( (tweet) => tweet._id !== tweetId ))
+      dispatch({type: 'REMOVE_TWEET', tweetId})
     })
   }
 
@@ -70,7 +75,10 @@ function Home() {
 
     if (isTweetFooter) return false;
     //encontra o tweet clicado e grava no state
-    const tweetSelecionado = tweetList.find(tweet => tweet._id === tweetId);
+    //const tweetSelecionado = tweetList.find(tweet => tweet._id === tweetId);
+    
+    //busca no STORE
+    const tweetSelecionado = tweetsStore.find(tweet => tweet._id === tweetId);
     setTweetAtivo(tweetSelecionado);
   }
 
@@ -111,10 +119,10 @@ function Home() {
             <Widget>
               <div className="tweetsArea">
                   {
-                    tweetList.length <= 0 ? 
+                    tweetsStore.length <= 0 ? 
                       <p>Oops! Você ainda não tuitou!</p>
                     :
-                      tweetList.map((tweet) => {
+                    tweetsStore.map((tweet) => {
                         return <Tweet 
                                   key={tweet._id} 
                                   texto={tweet.conteudo} 
@@ -143,5 +151,3 @@ function Home() {
     </Fragment>
   );
 }
-
-export default Home;
