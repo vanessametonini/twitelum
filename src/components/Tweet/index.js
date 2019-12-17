@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import { TweetsService } from "./../../services/TweetsService";
 
 import './tweet.css'
 
@@ -10,11 +11,10 @@ export default function Tweet(props) {
   const [likeado, setLikeado] = useState(props.tweetInfo.likeado);
   const [totalLikes, setTotalLikes] = useState(props.tweetInfo.totalLikes);
 
-  const urlAPI = `https://twitelum-api.herokuapp.com/tweets/${props.tweetInfo._id}/like?X-AUTH-TOKEN=${localStorage.getItem('token')}`;
   
   const likeHandler = () => {
-    fetch(urlAPI,{method: 'POST'})
-      .then(response => response.json())
+    TweetsService
+      .like(props.tweetInfo._id)
       .then(
         response => {
           console.log(response);

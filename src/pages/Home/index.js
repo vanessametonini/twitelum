@@ -6,19 +6,17 @@ import TrendsArea from '../../components/TrendsArea';
 import Tweet from '../../components/Tweet';
 import NavMenu from '../../components/NavMenu';
 import Modal from '../../components/Modal';
+import { TweetsService } from "./../../services/TweetsService";
 //import { useSelector, useDispatch } from "react-redux";
 
 export default function Home() {
 
   //const  = useSelector(state => state);
   //const dispatch = useDispatch();
+  //const [tweetList, setTweetList] = useState([]);
 
   const [tweet, setTweet] = useState('');
-  //const [tweetList, setTweetList] = useState([]);
-  const [tweetAtivo, setTweetAtivo] = useState({});
-  
-  const urlAPI = `https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${localStorage.getItem('token')}`;
-  
+  const [tweetAtivo, setTweetAtivo] = useState({});  
   const [tweetsStore, setTweetsStore] = useState([]);
 
   useEffect(() => {
@@ -27,12 +25,13 @@ export default function Home() {
       setTweetsStore(window.store.getState());
       
     })
+    
   })
 
   const listarTweets = () => {
     if(!tweetsStore.length) {
-      fetch(urlAPI)
-        .then(response => response.json())
+        TweetsService
+        .listar()
         .then(tweetsAPI => {
           //setTweetList(tweetsAPI)
           //dispatch({type: 'CARREGA_TWEETS', tweets: tweetsAPI})]
@@ -45,14 +44,8 @@ export default function Home() {
     event.preventDefault();
 
     if(tweet){
-      fetch(
-        urlAPI,
-        {
-          method: 'POST',
-          body: JSON.stringify({conteudo: tweet})
-        }
-      )
-      .then(response => response.json())
+      TweetsService
+      .adicionar(tweet)
       .then(
         tweetDaAPI => {
           //setTweetList([tweetDaAPI, ...tweetList]);
@@ -65,11 +58,8 @@ export default function Home() {
   }
 
   const removerTweet = (tweetId) => {
-    //console.log(urlAPI.replace('tweets?', `tweets/${tweetId}?`));
-  
-    fetch(urlAPI.replace('tweets?', `tweets/${tweetId}?`), {method: 'DELETE'})
-    .then(d => d.json())
-    .then( r => {
+    TweetsService.deletar(tweetId)
+    .then( () => {
       setTweetAtivo({});
       //setTweetList(tweetList.filter( (tweet) => tweet._id !== tweetId ))
       //dispatch({type: 'REMOVE_TWEET', tweetId})
