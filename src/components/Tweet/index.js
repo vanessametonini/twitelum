@@ -71,8 +71,9 @@ export default function Tweet(props) {
         {
           props.tweetInModal &&
           <ul className="tweet__likeadores">
-            {props.tweetInfo.likes.map(liker => 
-              <li>@{liker.usuario.login}</li>)
+            {props.tweetInfo.likes.map(
+              (liker, index) => <li key={index}>@{liker.usuario.login}</li>
+              )
             }
           </ul>
         }

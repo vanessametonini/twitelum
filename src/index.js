@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 import { createStore } from 'redux';
-import { Provider } from 'react-redux';
+//import { Provider } from 'react-redux';
 import rootReducer from './reducers/rootReducer';
 
 // CSS Global
@@ -18,9 +18,15 @@ import './assets/css/novoTweet.css'
 import Roteamento from "./routes";
 
 const store = createStore(rootReducer);
+window.store = store;
+
+/* ReactDOM.render(
+  <Provider store={store}><BrowserRouter><Roteamento /></BrowserRouter></Provider>
+  , document.getElementById('root')
+); */
 
 ReactDOM.render(
-  <Provider store={store}><BrowserRouter><Roteamento /></BrowserRouter></Provider>
+  <BrowserRouter><Roteamento /></BrowserRouter>
   , document.getElementById('root')
 );
 

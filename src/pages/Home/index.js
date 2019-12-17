@@ -1,4 +1,4 @@
-import React , {Fragment, useState, useEffect} from 'react';
+import React , {useState, useEffect } from 'react';
 import Cabecalho from '../../components/Cabecalho';
 import Dashboard from '../../components/Dashboard';
 import Widget from '../../components/Widget';
@@ -6,22 +6,27 @@ import TrendsArea from '../../components/TrendsArea';
 import Tweet from '../../components/Tweet';
 import NavMenu from '../../components/NavMenu';
 import Modal from '../../components/Modal';
-import { useSelector, useDispatch } from "react-redux";
+//import { useSelector, useDispatch } from "react-redux";
 
 export default function Home() {
 
-  const tweetsStore = useSelector(state => state);
-  
-  const dispatch = useDispatch();
+  //const  = useSelector(state => state);
+  //const dispatch = useDispatch();
 
   const [tweet, setTweet] = useState('');
   //const [tweetList, setTweetList] = useState([]);
   const [tweetAtivo, setTweetAtivo] = useState({});
-
+  
   const urlAPI = `https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${localStorage.getItem('token')}`;
+  
+  const [tweetsStore, setTweetsStore] = useState([]);
 
   useEffect(() => {
-    listarTweets()    
+    listarTweets()
+    window.store.subscribe(()=>{
+      setTweetsStore(window.store.getState());
+      
+    })
   })
 
   const listarTweets = () => {
@@ -30,7 +35,8 @@ export default function Home() {
         .then(response => response.json())
         .then(tweetsAPI => {
           //setTweetList(tweetsAPI)
-          dispatch({type: 'CARREGA_TWEETS', tweets: tweetsAPI})
+          //dispatch({type: 'CARREGA_TWEETS', tweets: tweetsAPI})]
+          window.store.dispatch({type: 'CARREGA_TWEETS', tweets: tweetsAPI})
         })
     }
   }
@@ -50,7 +56,8 @@ export default function Home() {
       .then(
         tweetDaAPI => {
           //setTweetList([tweetDaAPI, ...tweetList]);
-          dispatch({type: 'ADICIONA_TWEET', newTweet: tweetDaAPI })
+          //dispatch({type: 'ADICIONA_TWEET', newTweet: tweetDaAPI })
+          window.store.dispatch({type: 'ADICIONA_TWEET', newTweet: tweetDaAPI })
           setTweet('');
         }
       )
@@ -65,7 +72,8 @@ export default function Home() {
     .then( r => {
       setTweetAtivo({});
       //setTweetList(tweetList.filter( (tweet) => tweet._id !== tweetId ))
-      dispatch({type: 'REMOVE_TWEET', tweetId})
+      //dispatch({type: 'REMOVE_TWEET', tweetId})
+      window.store.dispatch({type: 'REMOVE_TWEET', tweetId})
     })
   }
 
@@ -87,7 +95,7 @@ export default function Home() {
   }
  
   return (
-    <Fragment>
+    <>
       <Cabecalho>
         <NavMenu usuario="@caelum"/>
       </Cabecalho>
@@ -148,6 +156,6 @@ export default function Home() {
             />
         }
       </Modal>
-    </Fragment>
+    </>
   );
 }
