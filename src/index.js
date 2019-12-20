@@ -2,9 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import rootReducer from './reducers/rootReducer';
+import { store } from 'store';
 
 // CSS Global
 import './assets/css/reset.css'
@@ -16,8 +15,6 @@ import './assets/css/novoTweet.css'
 
 //para importar o CSS dos components depois dos globais
 import Roteamento from "./routes";
-
-const store = createStore(rootReducer);
 
 ReactDOM.render(
   <Provider store={store}><BrowserRouter><Roteamento /></BrowserRouter></Provider>

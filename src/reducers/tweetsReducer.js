@@ -1,6 +1,6 @@
 const initialState = [];
 
-export default function rootReducer(state = initialState, action = {}) {
+export default function tweetsReducer(state = initialState, action = {}) {
 
   switch(action.type) {
     case "CARREGA_TWEETS":
