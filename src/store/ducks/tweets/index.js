@@ -5,20 +5,29 @@ export const Types = {
   REMOVE: "tweets/REMOVE"
 }
 
-//nos thunks vc criar um objeto que armazenam funções que retornam funções
+//nos thunks vc criar um objeto que armazenam funções que retornam funções, também chamadas de Creators
 export const TweetsThunksActions = {
 
-    carrega: () => {
-      return 
-    },
+  carrega: () => ({
+    action: Types.CARREGA,
+    payload: {
+      
+    }
+  }),
 
-    adiciona: () => {
+  adiciona: (tweet) => ({
+    action: Types.ADICIONA,
+    payload: {
+      tweet
+    }
+  }),
 
-    },
-
-    remove: () => {
-
-    },
+  remove: (id) => ({
+    action: Types.REMOVE,
+    payload: {
+      id
+    }
+  }),
 
 }
 

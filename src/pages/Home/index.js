@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 export default function Home() {
 
   const dispatch = useDispatch();
-  const tweetsStore = useSelector(state => state);  
+  const tweetsStore = useSelector(state => state.tweets.data);  
 
   const [tweet, setTweet] = useState('');
   const [tweetAtivo, setTweetAtivo] = useState({});  
