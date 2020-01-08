@@ -6,29 +6,24 @@ import TrendsArea from '../../components/TrendsArea';
 import Tweet from '../../components/Tweet';
 import NavMenu from '../../components/NavMenu';
 import Modal from '../../components/Modal';
-import { TweetsService } from "./../../services/TweetsService";
 import { useSelector, useDispatch } from "react-redux";
+import { TweetsThunksActions } from "../../store/ducks/tweets";
 
 export default function Home() {
 
   const dispatch = useDispatch();
-  const tweetsStore = useSelector(state => state.tweets.data);  
+  const { data: tweetsStore, loading } = useSelector(state => state.tweets);  
 
   const [tweet, setTweet] = useState('');
   const [tweetAtivo, setTweetAtivo] = useState({});  
 
   useEffect(() => {
     listarTweets();
-  })
+  }, [])
 
   const listarTweets = () => {
     if(!tweetsStore.length) {
-        TweetsService
-        .listar()
-        .then(tweetsAPI => {
-          dispatch({type: 'CARREGA_TWEETS', tweets: tweetsAPI})
-          
-        })
+      dispatch(TweetsThunksActions.carrega())
     }
   }
 
@@ -36,23 +31,12 @@ export default function Home() {
     event.preventDefault();
 
     if(tweet){
-      TweetsService
-      .adicionar(tweet)
-      .then(
-        tweetDaAPI => {
-          dispatch({type: 'ADICIONA_TWEET', newTweet: tweetDaAPI })
-          setTweet('');
-        }
-      )
+      dispatch(TweetsThunksActions.adiciona(tweet, () => setTweet('')))
     }
   }
 
   const removerTweet = (tweetId) => {
-    TweetsService.deletar(tweetId)
-    .then( () => {
-      setTweetAtivo({});
-      dispatch({type: 'REMOVE_TWEET', tweetId})
-    })
+    dispatch(TweetsThunksActions.deleta(tweetId, () => setTweetAtivo({})))
   }
 
   const abreModalParaTweet = (event, tweetId) => {
@@ -105,7 +89,7 @@ export default function Home() {
             <Widget>
               <div className="tweetsArea">
                   {
-                    tweetsStore.length <= 0 ? 
+                    tweetsStore.length <= 0 || loading ? 
                       <p>Oops! Você ainda não tuitou!</p>
                     :
                     tweetsStore.map((tweet) => {

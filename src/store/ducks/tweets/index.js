@@ -1,33 +1,38 @@
+import { TweetsService } from "../../../services/TweetsService";
 
 export const Types = {
-  CARREGA: "tweets/CARREGA",
-  ADICIONA: "tweets/ADICIONA",
-  REMOVE: "tweets/REMOVE"
+  CARREGA_INICIO: "tweets/CARREGA_INICIO",
+  CARREGA_SUCESSO: "tweets/CARREGA_SUCESSO",
+  ADICIONA_SUCESSO: "tweets/ADICIONA_SUCESSO",
+  REMOVE_SUCESSO: "tweets/REMOVE_SUCESSO"
 }
 
 //nos thunks vc criar um objeto que armazenam funções que retornam funções, também chamadas de Creators
 export const TweetsThunksActions = {
 
-  carrega: () => ({
-    action: Types.CARREGA,
-    payload: {
-      
-    }
-  }),
+  carrega: () => dispatch => {
 
-  adiciona: (tweet) => ({
-    action: Types.ADICIONA,
-    payload: {
-      tweet
-    }
-  }),
+    dispatch({type: Types.CARREGA_INICIO})
 
-  remove: (id) => ({
-    action: Types.REMOVE,
-    payload: {
-      id
-    }
-  }),
+    TweetsService
+    .listar()
+      .then(tweetsAPI => dispatch({type: Types.CARREGA_SUCESSO, payload: tweetsAPI}))
+
+  },
+
+  adiciona: (tweet, cb) => dispatch => {
+     TweetsService
+        .adicionar(tweet)
+        .then(tweetDaAPI =>  dispatch({type: Types.ADICIONA_SUCESSO, newTweet: tweetDaAPI }))
+        .then(() => cb())
+  },
+
+  deleta: (tweetId, cb) => dispatch => {
+    TweetsService
+      .deletar(tweetId)
+      .then(() => dispatch({type: Types.REMOVE_SUCESSO, tweetId}))
+      .then(() => cb())
+  },
 
 }
 
@@ -40,17 +45,20 @@ const initialState = {
 export default function tweetsReducer(state = initialState, action = {}) {
 
   switch(action.type) {
-    case Types.CARREGA:
-      state = action.tweets;
-      return state;
 
-    case Types.ADICIONA:
-        state = [action.newTweet, ...state];
-        return state;
+    case Types.CARREGA_INICIO:
+      return { ...state, loading: true };
 
-    case Types.REMOVE:
-        state = state.filter( (tweet) => tweet._id !== action.tweetId );
-        return state;
+    case Types.CARREGA_SUCESSO:
+      return { ...state, loading: false, data: action.payload};
+      
+    case Types.ADICIONA_SUCESSO:
+        return {...state, data: [action.newTweet, ...state.data], loading: false};
+
+    case Types.REMOVE_SUCESSO:
+      return {...state
+              , data: state.data.filter( (tweet) => tweet._id !== action.tweetId )
+              , loading: false};
 
     default:
         return state;
