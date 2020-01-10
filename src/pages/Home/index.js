@@ -31,12 +31,12 @@ export default function Home() {
     event.preventDefault();
 
     if(tweet){
-      dispatch(TweetsThunksActions.adiciona(tweet, () => setTweet('')))
+      dispatch(TweetsThunksActions.adiciona(tweet)).then(() => setTweet(''))
     }
   }
 
   const removerTweet = (tweetId) => {
-    dispatch(TweetsThunksActions.deleta(tweetId, () => setTweetAtivo({})))
+    dispatch(TweetsThunksActions.deleta(tweetId)).then(() => setTweetAtivo({}))
   }
 
   const abreModalParaTweet = (event, tweetId) => {

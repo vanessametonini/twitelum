@@ -20,18 +20,24 @@ export const TweetsThunksActions = {
 
   },
 
-  adiciona: (tweet, cb) => dispatch => {
-     TweetsService
-        .adicionar(tweet)
-        .then(tweetDaAPI =>  dispatch({type: Types.ADICIONA_SUCESSO, newTweet: tweetDaAPI }))
-        .then(() => cb())
+  adiciona: (tweet) => dispatch => {
+     return TweetsService
+            .adicionar(tweet)
+            .then(
+              tweetDaAPI => {
+                dispatch({type: Types.ADICIONA_SUCESSO, newTweet: tweetDaAPI })
+                return Promise.resolve()
+            })
   },
 
-  deleta: (tweetId, cb) => dispatch => {
-    TweetsService
-      .deletar(tweetId)
-      .then(() => dispatch({type: Types.REMOVE_SUCESSO, tweetId}))
-      .then(() => cb())
+  deleta: (tweetId) => dispatch => {
+    return TweetsService
+            .deletar(tweetId)
+            .then(
+              () => {
+                dispatch({type: Types.REMOVE_SUCESSO, tweetId})
+                return Promise.resolve()
+            })
   },
 
 }
